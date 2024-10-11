@@ -6,10 +6,10 @@
         <Nullable>enable</Nullable>
         <LangVersion>Latest</LangVersion>
 
-        <PackageId></PackageId>
-        <Description></Description>
-        <PackageTags></PackageTags>
-        <PackageReleaseNotes>https://github.com/Drammer-whisky-app/TODO/releases</PackageReleaseNotes>
+        <PackageId>Drammer.Common.Infrastructure</PackageId>
+        <Description>Infrastructure features for the Drammer whisky app.</Description>
+        <PackageTags>infrastructure entity-framework</PackageTags>
+        <PackageReleaseNotes>https://github.com/Drammer-whisky-app/Drammer.Common.Infrastructure/releases</PackageReleaseNotes>
         <Authors>Marthijn van den Heuvel,Drammer</Authors>
         <Copyright>Copyright (c) 2024 Drammer whisky app</Copyright>
 

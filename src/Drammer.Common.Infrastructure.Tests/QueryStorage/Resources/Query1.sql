@@ -1,0 +1,5 @@
+﻿-- BEGIN HEADER
+DECLARE @MyVar INT = NULL;
+-- END HEADER
+
+SELECT * FROM MyTable WHERE Id = @MyVar;

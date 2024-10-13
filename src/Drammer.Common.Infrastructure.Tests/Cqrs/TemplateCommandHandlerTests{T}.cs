@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Drammer.Common.Infrastructure.Cqrs;
-using Drammer.Common.Infrastructure.Database;
+using Drammer.Common.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 

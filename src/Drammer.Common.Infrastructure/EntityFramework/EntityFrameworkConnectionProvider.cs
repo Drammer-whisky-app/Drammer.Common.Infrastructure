@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using Drammer.Common.Infrastructure.Database;
+using Drammer.Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Drammer.Common.Infrastructure.EntityFramework;

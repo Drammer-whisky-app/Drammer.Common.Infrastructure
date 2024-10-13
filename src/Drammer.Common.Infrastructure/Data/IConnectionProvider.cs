@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Drammer.Common.Infrastructure.Database;
+namespace Drammer.Common.Infrastructure.Data;
 
 public interface IConnectionProvider
 {

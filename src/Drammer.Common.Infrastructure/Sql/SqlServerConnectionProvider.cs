@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-using Drammer.Common.Infrastructure.Database;
+using Drammer.Common.Infrastructure.Data;
 
 namespace Drammer.Common.Infrastructure.Sql;
 

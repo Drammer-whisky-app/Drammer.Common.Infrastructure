@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Drammer.Common.Infrastructure.Cqrs;
 
@@ -8,7 +9,7 @@ public sealed class EmbeddedResourceQueryStorage : IQueryStorage
 {
     private const string SqlExtension = ".sql";
     private readonly Type _assemblyType;
-    private Dictionary<string, string>? _cache;
+    private ConcurrentDictionary<string, string>? _cache;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmbeddedResourceQueryStorage"/> class.
@@ -55,7 +56,7 @@ public sealed class EmbeddedResourceQueryStorage : IQueryStorage
     [MemberNotNull(nameof(_cache))]
     private async Task LoadFilesAsync(CancellationToken cancellationToken = default)
     {
-        _cache = new Dictionary<string, string>();
+        _cache = new ConcurrentDictionary<string, string>();
 
         var assembly = Assembly.GetAssembly(_assemblyType);
         if (assembly == null)
@@ -72,7 +73,7 @@ public sealed class EmbeddedResourceQueryStorage : IQueryStorage
 
             if (!string.IsNullOrWhiteSpace(result))
             {
-                _cache.Add(GetFilename(r).ToLower(), result);
+                _cache.TryAdd(GetFilename(r).ToLower(), result);
             }
         }
     }

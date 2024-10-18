@@ -7,7 +7,7 @@
         <LangVersion>Latest</LangVersion>
 
         <PackageId>Drammer.Common.Infrastructure</PackageId>
-        <Description>Infrastructure features for the Drammer whisky app.</Description>
+        <Description>Common infrastructure package for the Drammer whisky app.</Description>
         <PackageTags>infrastructure entity-framework</PackageTags>
         <PackageReleaseNotes>https://github.com/Drammer-whisky-app/Drammer.Common.Infrastructure/releases</PackageReleaseNotes>
         <Authors>Marthijn van den Heuvel,Drammer</Authors>

@@ -8,6 +8,13 @@ namespace Drammer.Common.Infrastructure.Data;
 /// </summary>
 public static class DbDataReaderExtensions
 {
+    public static string GetString(this DbDataReader row, string columnName) => row.GetString(row.GetOrdinal(columnName));
+
+    public static string? GetNString(this DbDataReader row, string columnName) =>
+        row.IsDBNull(columnName) ? null : (string?) row.GetString(columnName);
+
+    public static int? GetInt32(this DbDataReader row, string columnName) => row.GetInt32(row.GetOrdinal(columnName));
+
     /// <summary>
     /// The get n int.
     /// </summary>
@@ -20,15 +27,13 @@ public static class DbDataReaderExtensions
     /// <returns>
     /// The <see cref="int"/>.
     /// </returns>
-    public static int? GetNInt32(this DbDataReader row, string columnName)
-    {
-        return row.IsDBNull(columnName) ? null : (int?)row[columnName];
-    }
+    public static int? GetNInt32(this DbDataReader row, string columnName) =>
+        row.IsDBNull(columnName) ? null : row.GetInt32(columnName);
 
-    public static long? GetNInt64(this DbDataReader row, string columnName)
-    {
-        return row.IsDBNull(columnName) ? null : (long?)row[columnName];
-    }
+    public static long GetInt64(this DbDataReader row, string columnName) => row.GetInt64(row.GetOrdinal(columnName));
+
+    public static long? GetNInt64(this DbDataReader row, string columnName) =>
+        row.IsDBNull(columnName) ? null : row.GetInt64(columnName);
 
     /// <summary>
     /// The get n decimal.
@@ -47,11 +52,6 @@ public static class DbDataReaderExtensions
         return row.IsDBNull(columnName) ? null : (decimal?)row[columnName];
     }
 
-    public static string? GetNString(this DbDataReader row, string columnName)
-    {
-        return row.IsDBNull(columnName) ? null : (string?)row[columnName];
-    }
-
     /// <summary>
     /// The get bool.
     /// </summary>
@@ -68,6 +68,8 @@ public static class DbDataReaderExtensions
     {
         return (bool)row[columnName];
     }
+
+    public static DateTime GetDateTime(this DbDataReader row, string columnName) => row.GetDateTime(row.GetOrdinal(columnName));
 
     /// <summary>
     /// The get n date time.

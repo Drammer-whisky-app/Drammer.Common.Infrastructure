@@ -13,7 +13,7 @@ public static class DbDataReaderExtensions
     public static string? GetNString(this DbDataReader row, string columnName) =>
         row.IsDBNull(columnName) ? null : (string?) row.GetString(columnName);
 
-    public static int? GetInt32(this DbDataReader row, string columnName) => row.GetInt32(row.GetOrdinal(columnName));
+    public static int GetInt32(this DbDataReader row, string columnName) => row.GetInt32(row.GetOrdinal(columnName));
 
     /// <summary>
     /// The get n int.

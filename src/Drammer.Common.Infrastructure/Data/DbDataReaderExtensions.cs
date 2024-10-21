@@ -35,6 +35,9 @@ public static class DbDataReaderExtensions
     public static long? GetNInt64(this DbDataReader row, string columnName) =>
         row.IsDBNull(columnName) ? null : row.GetInt64(columnName);
 
+    public static decimal GetDecimal(this DbDataReader row, string columnName) =>
+        row.GetDecimal(row.GetOrdinal(columnName));
+
     /// <summary>
     /// The get n decimal.
     /// </summary>
@@ -49,7 +52,7 @@ public static class DbDataReaderExtensions
     /// </returns>
     public static decimal? GetNDecimal(this DbDataReader row, string columnName)
     {
-        return row.IsDBNull(columnName) ? null : (decimal?)row[columnName];
+        return row.IsDBNull(columnName) ? null : row.GetDecimal(columnName);
     }
 
     /// <summary>

@@ -8,87 +8,118 @@ namespace Drammer.Common.Infrastructure.Data;
 /// </summary>
 public static class DbDataReaderExtensions
 {
-    public static string GetString(this DbDataReader row, string columnName) => row.GetString(row.GetOrdinal(columnName));
-
-    public static string? GetNString(this DbDataReader row, string columnName) =>
-        row.IsDBNull(columnName) ? null : (string?) row.GetString(columnName);
-
-    public static int GetInt32(this DbDataReader row, string columnName) => row.GetInt32(row.GetOrdinal(columnName));
+    /// <summary>
+    /// Get the string value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader">The database data reader.</param>
+    /// <param name="columnName">The column name.</param>
+    /// <returns>A <see cref="string"/>.</returns>
+    public static string GetStringValue(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetString(dbDataReader.GetOrdinal(columnName));
 
     /// <summary>
-    /// The get n int.
+    /// Get the nullable string value from the <see cref="DbDataReader"/>.
     /// </summary>
-    /// <param name="row">
-    /// The row.
-    /// </param>
-    /// <param name="columnName">
-    /// The column name.
-    /// </param>
-    /// <returns>
-    /// The <see cref="int"/>.
-    /// </returns>
-    public static int? GetNInt32(this DbDataReader row, string columnName) =>
-        row.IsDBNull(columnName) ? null : row.GetInt32(columnName);
-
-    public static long GetInt64(this DbDataReader row, string columnName) => row.GetInt64(row.GetOrdinal(columnName));
-
-    public static long? GetNInt64(this DbDataReader row, string columnName) =>
-        row.IsDBNull(columnName) ? null : row.GetInt64(columnName);
-
-    public static decimal GetDecimal(this DbDataReader row, string columnName) =>
-        row.GetDecimal(row.GetOrdinal(columnName));
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static string? GetNullableStringValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : (string?) dbDataReader.GetStringValue(columnName);
 
     /// <summary>
-    /// The get n decimal.
+    /// Get the int value from the <see cref="DbDataReader"/>.
     /// </summary>
-    /// <param name="row">
-    /// The row.
-    /// </param>
-    /// <param name="columnName">
-    /// The column name.
-    /// </param>
-    /// <returns>
-    /// The <see cref="decimal"/>.
-    /// </returns>
-    public static decimal? GetNDecimal(this DbDataReader row, string columnName)
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static int GetInt32Value(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetInt32(dbDataReader.GetOrdinal(columnName));
+
+    /// <summary>
+    /// Get the nullable int value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static int? GetNullableInt32Value(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetInt32Value(columnName);
+
+    /// <summary>
+    /// Get the long value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static long GetInt64Value(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.GetInt64(dbDataReader.GetOrdinal(columnName));
+
+    /// <summary>
+    /// Get the nullable long value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static long? GetNullableInt64Value(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetInt64Value(columnName);
+
+    /// <summary>
+    /// Get the decimal value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static decimal GetDecimalValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.GetDecimal(dbDataReader.GetOrdinal(columnName));
+
+    /// <summary>
+    /// Get the nullable decimal value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static decimal? GetNullableDecimalValue(this DbDataReader dbDataReader, string columnName)
     {
-        return row.IsDBNull(columnName) ? null : row.GetDecimal(columnName);
+        return dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetDecimalValue(columnName);
     }
 
     /// <summary>
-    /// The get bool.
+    /// Get the boolean value from the <see cref="DbDataReader"/>.
     /// </summary>
-    /// <param name="row">
-    /// The row.
-    /// </param>
-    /// <param name="columnName">
-    /// The column name.
-    /// </param>
-    /// <returns>
-    /// The <see cref="bool"/>.
-    /// </returns>
-    public static bool GetBool(this DbDataReader row, string columnName)
-    {
-        return (bool)row[columnName];
-    }
-
-    public static DateTime GetDateTime(this DbDataReader row, string columnName) => row.GetDateTime(row.GetOrdinal(columnName));
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static bool GetBooleanValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.GetBoolean(dbDataReader.GetOrdinal(columnName));
 
     /// <summary>
-    /// The get n date time.
+    /// Get the nullable boolean value from the <see cref="DbDataReader"/>.
     /// </summary>
-    /// <param name="row">
-    /// The row.
-    /// </param>
-    /// <param name="columnName">
-    /// The column name.
-    /// </param>
-    /// <returns>
-    /// The <see cref="DateTime"/>.
-    /// </returns>
-    public static DateTime? GetNDateTime(this DbDataReader row, string columnName)
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static bool? GetNullableBooleanValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetBooleanValue(columnName);
+
+    /// <summary>
+    /// Get the date time value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static DateTime GetDateTimeValueAsUtc(this DbDataReader dbDataReader, string columnName)
     {
-        var dateTime = row.IsDBNull(columnName) ? null : (DateTime?)row[columnName];
+        var result = dbDataReader.GetDateTime(dbDataReader.GetOrdinal(columnName));
+        result = DateTime.SpecifyKind(result, DateTimeKind.Utc);
+        return result;
+    }
+
+    /// <summary>
+    /// Get the nullable date time value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static DateTime? GetNullableDateTimeValueAsUtc(this DbDataReader dbDataReader, string columnName)
+    {
+        var dateTime = dbDataReader.IsDBNull(columnName) ? null : (DateTime?)dbDataReader[columnName];
         if (dateTime.HasValue)
         {
             dateTime = DateTime.SpecifyKind(dateTime.Value, DateTimeKind.Utc);
@@ -97,41 +128,42 @@ public static class DbDataReaderExtensions
         return dateTime;
     }
 
-    public static T GetEnum<T>(this DbDataReader row, string columnName)
+    /// <summary>
+    /// Get the enum value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static T GetEnumValue<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
-        if (row.IsDBNull(columnName))
+        if (dbDataReader.IsDBNull(columnName))
         {
             throw new InvalidOperationException($"Cannot convert null in column `{columnName}` to enum of type `{typeof(T).Name}`");
         }
 
-        var value = row.GetInt32(columnName);
+        var value = dbDataReader.GetInt32Value(columnName);
         return (T)Enum.ToObject(typeof(T), value);
     }
 
     /// <summary>
-    /// The get enum.
+    /// Get the nullable enum value from the <see cref="DbDataReader"/>.
     /// </summary>
-    /// <param name="row">
-    /// The row.
-    /// </param>
-    /// <param name="columnName">
-    /// The column name.
-    /// </param>
-    /// <typeparam name="T">
-    /// </typeparam>
-    /// <returns>
-    /// The <see cref="T"/>.
-    /// </returns>
-    public static T? GetNEnum<T>(this DbDataReader row, string columnName)
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T? GetNullableEnumValue<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
-        if (row.IsDBNull(columnName))
+        if (dbDataReader.IsDBNull(columnName))
         {
             return null;
         }
 
-        var value = row.GetInt32(columnName);
+        var value = dbDataReader.GetInt32Value(columnName);
         return (T)Enum.ToObject(typeof(T), value);
     }
 }

@@ -98,6 +98,7 @@ public static class DbDataReaderExtensions
     }
 
     public static T GetEnum<T>(this DbDataReader row, string columnName)
+        where T : struct, Enum
     {
         if (row.IsDBNull(columnName))
         {
@@ -123,10 +124,11 @@ public static class DbDataReaderExtensions
     /// The <see cref="T"/>.
     /// </returns>
     public static T? GetNEnum<T>(this DbDataReader row, string columnName)
+        where T : struct, Enum
     {
         if (row.IsDBNull(columnName))
         {
-            return default;
+            return null;
         }
 
         var value = row.GetInt32(columnName);

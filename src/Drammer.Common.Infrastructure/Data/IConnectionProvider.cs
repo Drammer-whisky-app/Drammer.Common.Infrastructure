@@ -2,6 +2,9 @@
 
 namespace Drammer.Common.Infrastructure.Data;
 
+/// <summary>
+/// The connection provider interface.
+/// </summary>
 public interface IConnectionProvider
 {
     /// <summary>

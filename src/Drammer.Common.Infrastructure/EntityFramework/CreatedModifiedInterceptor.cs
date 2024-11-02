@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Drammer.Common.Infrastructure.EntityFramework;
 
+/// <summary>
+/// The CreatedModifiedInterceptor.
+/// </summary>
 public sealed class CreatedModifiedInterceptor : SaveChangesInterceptor
 {
+    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         if (eventData.Context is not null)
@@ -16,6 +20,7 @@ public sealed class CreatedModifiedInterceptor : SaveChangesInterceptor
         return base.SavingChanges(eventData, result);
     }
 
+    /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,

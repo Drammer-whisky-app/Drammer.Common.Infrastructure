@@ -55,6 +55,51 @@ public sealed class DbDataReaderExtensionsTests
     }
 
     [Fact]
+    public void GetInt16Value_ReturnsInt16()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        var value = _fixture.Create<short>();
+        reader.Setup(x => x.GetInt16(DefaultColumnIndex)).Returns(value);
+
+        // act
+        var result = DbDataReaderExtensions.GetInt16Value(reader.Object, column);
+
+        // assert
+        result.Should().Be(value);
+    }
+
+    [Fact]
+    public void GetNullableInt16Value_WhenColumnIsNull_ReturnsNull()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableInt16Value(reader.Object, column);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void GetNullableInt16Value_WhenColumnIsNotNull_ReturnsInt16()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        var value = _fixture.Create<short>();
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(false);
+        reader.Setup(x => x.GetInt16(DefaultColumnIndex)).Returns(value);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableInt16Value(reader.Object, column);
+
+        // assert
+        result.Should().Be(value);
+    }
+
+    [Fact]
     public void GetInt32Value_ReturnsInt32()
     {
         // arrange
@@ -280,7 +325,7 @@ public sealed class DbDataReaderExtensionsTests
     }
 
     [Fact]
-    public void GetEnumValue_ReturnsEnum()
+    public void GetEnumValueFromInt32_ReturnsEnum()
     {
         // arrange
         var reader = CreateDbDataReaderMock(out var column);
@@ -288,28 +333,28 @@ public sealed class DbDataReaderExtensionsTests
         reader.Setup(x => x.GetInt32(DefaultColumnIndex)).Returns((int)value);
 
         // act
-        var result = DbDataReaderExtensions.GetEnumValue<TestEnum>(reader.Object, column);
+        var result = DbDataReaderExtensions.GetEnumValueFromInt32<TestEnum>(reader.Object, column);
 
         // assert
         result.Should().Be(value);
     }
 
     [Fact]
-    public void GetNullableEnumValue_WhenColumnIsNull_ReturnsNull()
+    public void GetNullableEnumValueFromInt32_WhenColumnIsNull_ReturnsNull()
     {
         // arrange
         var reader = CreateDbDataReaderMock(out var column);
         reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
 
         // act
-        var result = DbDataReaderExtensions.GetNullableEnumValue<TestEnum>(reader.Object, column);
+        var result = DbDataReaderExtensions.GetNullableEnumValueFromInt32<TestEnum>(reader.Object, column);
 
         // assert
         result.Should().BeNull();
     }
 
     [Fact]
-    public void GetNullableEnumValue_WhenColumnIsNotNull_ReturnsEnum()
+    public void GetNullableEnumValueFromInt32_WhenColumnIsNotNull_ReturnsEnum()
     {
         // arrange
         var reader = CreateDbDataReaderMock(out var column);
@@ -317,10 +362,54 @@ public sealed class DbDataReaderExtensionsTests
         reader.Setup(x => x.GetInt32(DefaultColumnIndex)).Returns((int)TestEnum.Value2);
 
         // act
-        var result = DbDataReaderExtensions.GetNullableEnumValue<TestEnum>(reader.Object, column);
+        var result = DbDataReaderExtensions.GetNullableEnumValueFromInt32<TestEnum>(reader.Object, column);
 
         // assert
         result.Should().Be(TestEnum.Value2);
+    }
+    
+    [Fact]
+    public void GetEnumValueFromInt16_ReturnsEnum()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        var value = TestEnumShort.Value1;
+        reader.Setup(x => x.GetInt16(DefaultColumnIndex)).Returns((short)value);
+
+        // act
+        var result = DbDataReaderExtensions.GetEnumValueFromInt16<TestEnumShort>(reader.Object, column);
+
+        // assert
+        result.Should().Be(value);
+    }
+
+    [Fact]
+    public void GetNullableEnumValueFromInt16_WhenColumnIsNull_ReturnsNull()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableEnumValueFromInt16<TestEnumShort>(reader.Object, column);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void GetNullableEnumValueFromInt16_WhenColumnIsNotNull_ReturnsEnum()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(false);
+        reader.Setup(x => x.GetInt16(DefaultColumnIndex)).Returns((short)TestEnumShort.Value2);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableEnumValueFromInt16<TestEnumShort>(reader.Object, column);
+
+        // assert
+        result.Should().Be(TestEnumShort.Value2);
     }
 
     private Mock<DbDataReader> CreateDbDataReaderMock(out string column)
@@ -337,5 +426,12 @@ public sealed class DbDataReaderExtensionsTests
     {
         Value1,
         Value2
+    }
+
+    [Flags]
+    private enum TestEnumShort : short
+    {
+        Value1,
+        Value2,
     }
 }

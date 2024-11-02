@@ -31,6 +31,23 @@ public static class DbDataReaderExtensions
     /// <param name="dbDataReader"></param>
     /// <param name="columnName"></param>
     /// <returns></returns>
+    public static short GetInt16Value(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetInt16(dbDataReader.GetOrdinal(columnName));
+
+    /// <summary>
+    /// Get the nullable int value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static short? GetNullableInt16Value(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetInt16Value(columnName);
+
+    /// <summary>
+    /// Get the int value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
     public static int GetInt32Value(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetInt32(dbDataReader.GetOrdinal(columnName));
 
     /// <summary>
@@ -136,7 +153,7 @@ public static class DbDataReaderExtensions
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    public static T GetEnumValue<T>(this DbDataReader dbDataReader, string columnName)
+    public static T GetEnumValueFromInt32<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
         if (dbDataReader.IsDBNull(columnName))
@@ -155,7 +172,7 @@ public static class DbDataReaderExtensions
     /// <param name="columnName"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? GetNullableEnumValue<T>(this DbDataReader dbDataReader, string columnName)
+    public static T? GetNullableEnumValueFromInt32<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
         if (dbDataReader.IsDBNull(columnName))
@@ -164,6 +181,45 @@ public static class DbDataReaderExtensions
         }
 
         var value = dbDataReader.GetInt32Value(columnName);
+        return (T)Enum.ToObject(typeof(T), value);
+    }
+
+    /// <summary>
+    /// Get the enum value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static T GetEnumValueFromInt16<T>(this DbDataReader dbDataReader, string columnName)
+        where T : struct, Enum
+    {
+        if (dbDataReader.IsDBNull(columnName))
+        {
+            throw new InvalidOperationException($"Cannot convert null in column `{columnName}` to enum of type `{typeof(T).Name}`");
+        }
+
+        var value = dbDataReader.GetInt16Value(columnName);
+        return (T)Enum.ToObject(typeof(T), value);
+    }
+
+    /// <summary>
+    /// Get the nullable enum value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T? GetNullableEnumValueFromInt16<T>(this DbDataReader dbDataReader, string columnName)
+        where T : struct, Enum
+    {
+        if (dbDataReader.IsDBNull(columnName))
+        {
+            return null;
+        }
+
+        var value = dbDataReader.GetInt16Value(columnName);
         return (T)Enum.ToObject(typeof(T), value);
     }
 }

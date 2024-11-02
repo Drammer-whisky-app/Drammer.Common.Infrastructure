@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drammer.Common.Infrastructure.EntityFramework;
 
 /// <summary>
 /// The service collection extensions.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
     /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Drammer.Common.Infrastructure.EntityFramework;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Drammer.Common.Infrastructure.EntityFramework;
 
 /// <summary>
 /// The created/modified entity.
@@ -6,6 +8,7 @@
 /// <typeparam name="TKey">
 /// The key type.
 /// </typeparam>
+[ExcludeFromCodeCoverage]
 public abstract class CreatedModifiedEntity<TKey> : Entity<TKey>, ICreatedModifiedEntity
 {
     /// <summary>

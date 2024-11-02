@@ -18,7 +18,7 @@ public static class TableName
     {
         var attributes = type.GetCustomAttributes(typeof(TableAttribute)).ToList();
 
-        if (attributes == null || !attributes.Any())
+        if (attributes == null || attributes.Count == 0)
         {
             throw new InvalidOperationException($"Type {type.Name} does not have a TableAttribute");
         }

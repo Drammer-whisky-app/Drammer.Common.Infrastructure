@@ -1,5 +1,8 @@
-﻿namespace Drammer.Common.Infrastructure.QueryStorage;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Drammer.Common.Infrastructure.QueryStorage;
+
+[ExcludeFromCodeCoverage]
 public sealed class SqlQueryNotFoundException : Exception
 {
     public SqlQueryNotFoundException(string queryName)

@@ -13,7 +13,7 @@ updates:
       - dependency-name: "*"
     ignore:
       - dependency-name: "FluentAssertions"
-        update-types: ["version-update:semver-major"]
+        versions: [">=8.*"]
     groups:
       microsoft:
         patterns:

@@ -46,4 +46,9 @@ public static class SqlExtensions
     {
         return val == null ? "NULL" : val.Value.ToSqlValue();
     }
+
+    public static string ToSqlValue(this Guid val)
+    {
+        return val.ToString("D").ToSqlValue();
+    }
 }

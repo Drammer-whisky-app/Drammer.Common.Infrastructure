@@ -412,6 +412,51 @@ public sealed class DbDataReaderExtensionsTests
         result.Should().Be(TestEnumShort.Value2);
     }
 
+    [Fact]
+    public void GetGuidValue_ReturnsString()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        var value = _fixture.Create<Guid>();
+        reader.Setup(x => x.GetGuid(DefaultColumnIndex)).Returns(value);
+
+        // act
+        var result = DbDataReaderExtensions.GetGuidValue(reader.Object, column);
+
+        // assert
+        result.Should().Be(value);
+    }
+
+    [Fact]
+    public void GetNullableGuidValue_WhenColumnIsNull_ReturnsNull()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableGuidValue(reader.Object, column);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void GetNullableGuidValue_WhenColumnIsNotNull_ReturnsString()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        var value = _fixture.Create<Guid>();
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(false);
+        reader.Setup(x => x.GetGuid(DefaultColumnIndex)).Returns(value);
+
+        // act
+        var result = DbDataReaderExtensions.GetNullableGuidValue(reader.Object, column);
+
+        // assert
+        result.Should().Be(value);
+    }
+
     private Mock<DbDataReader> CreateDbDataReaderMock(out string column)
     {
         var columnName = _fixture.Create<string>();

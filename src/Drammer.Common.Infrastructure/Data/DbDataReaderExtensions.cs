@@ -26,6 +26,23 @@ public static class DbDataReaderExtensions
         dbDataReader.IsDBNull(columnName) ? null : (string?) dbDataReader.GetStringValue(columnName);
 
     /// <summary>
+    /// Get the GUID value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static Guid GetGuidValue(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetGuid(dbDataReader.GetOrdinal(columnName));
+
+    /// <summary>
+    /// Get the nullable GUID value from the <see cref="DbDataReader"/>.
+    /// </summary>
+    /// <param name="dbDataReader"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    public static Guid? GetNullableGuidValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.IsDBNull(columnName) ? null : dbDataReader.GetGuidValue(columnName);
+
+    /// <summary>
     /// Get the int value from the <see cref="DbDataReader"/>.
     /// </summary>
     /// <param name="dbDataReader"></param>

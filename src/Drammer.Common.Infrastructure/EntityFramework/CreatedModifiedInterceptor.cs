@@ -9,6 +9,17 @@ namespace Drammer.Common.Infrastructure.EntityFramework;
 /// </summary>
 public sealed class CreatedModifiedInterceptor : SaveChangesInterceptor
 {
+    private readonly TimeProvider _timeProvider;
+
+    /// <summary>
+    /// Creates a new instance of the <see cref="CreatedModifiedInterceptor"/> class.
+    /// </summary>
+    /// <param name="timeProvider">The time provider.</param>
+    public CreatedModifiedInterceptor(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
+
     /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -34,9 +45,9 @@ public sealed class CreatedModifiedInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static void UpdateEntities(DbContext context)
+    private void UpdateEntities(DbContext context)
     {
-        var utcNow = DateTime.UtcNow;
+        var utcNow = _timeProvider.GetUtcNow().DateTime;
         var entities = context.ChangeTracker.Entries<ICreatedModifiedEntity>().ToList();
 
         foreach (var entry in entities)

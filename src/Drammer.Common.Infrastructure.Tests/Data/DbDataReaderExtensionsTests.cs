@@ -25,6 +25,23 @@ public sealed class DbDataReaderExtensionsTests
     }
 
     [Fact]
+    public void GetStringValue_WhenColumnIsNull_ThrowsInvalidOperationExceptionWithColumnName()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        Action action = () => DbDataReaderExtensions.GetStringValue(reader.Object, column);
+
+        // assert
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage($"*{column}*");
+    }
+
+    [Fact]
     public void GetNullableStringValue_WhenColumnIsNull_ReturnsNull()
     {
         // arrange
@@ -295,6 +312,23 @@ public sealed class DbDataReaderExtensionsTests
     }
 
     [Fact]
+    public void GetDateTimeValueAsUtc_WhenColumnIsNull_ThrowsInvalidOperationExceptionWithColumnName()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        Action action = () => DbDataReaderExtensions.GetDateTimeValueAsUtc(reader.Object, column);
+
+        // assert
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage($"*{column}*");
+    }
+
+    [Fact]
     public void GetNullableDateTimeValueAsUtc_WhenColumnIsNull_ReturnsNull()
     {
         // arrange
@@ -340,6 +374,23 @@ public sealed class DbDataReaderExtensionsTests
     }
 
     [Fact]
+    public void GetEnumValueFromInt32_WhenColumnIsNull_ThrowsInvalidOperationExceptionWithColumnName()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        Action action = () => DbDataReaderExtensions.GetEnumValueFromInt32<TestEnum>(reader.Object, column);
+
+        // assert
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage($"*{column}*");
+    }
+
+    [Fact]
     public void GetNullableEnumValueFromInt32_WhenColumnIsNull_ReturnsNull()
     {
         // arrange
@@ -381,6 +432,23 @@ public sealed class DbDataReaderExtensionsTests
 
         // assert
         result.Should().Be(value);
+    }
+
+    [Fact]
+    public void GetEnumValueFromInt16_WhenColumnIsNull_ThrowsInvalidOperationExceptionWithColumnName()
+    {
+        // arrange
+        var reader = CreateDbDataReaderMock(out var column);
+        reader.Setup(x => x.IsDBNull(DefaultColumnIndex)).Returns(true);
+
+        // act
+        Action action = () => DbDataReaderExtensions.GetEnumValueFromInt16<TestEnumShort>(reader.Object, column);
+
+        // assert
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage($"*{column}*");
     }
 
     [Fact]

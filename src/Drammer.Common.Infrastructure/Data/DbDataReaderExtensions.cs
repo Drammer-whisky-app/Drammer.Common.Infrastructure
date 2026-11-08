@@ -14,7 +14,8 @@ public static class DbDataReaderExtensions
     /// <param name="dbDataReader">The database data reader.</param>
     /// <param name="columnName">The column name.</param>
     /// <returns>A <see cref="string"/>.</returns>
-    public static string GetStringValue(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetString(dbDataReader.GetOrdinal(columnName));
+    public static string GetStringValue(this DbDataReader dbDataReader, string columnName)=>
+        dbDataReader.GetRequiredValue(columnName, nameof(String), static (reader, ordinal) => reader.GetString(ordinal));
 
     /// <summary>
     /// Get the nullable string value from the <see cref="DbDataReader"/>.
@@ -31,7 +32,8 @@ public static class DbDataReaderExtensions
     /// <param name="dbDataReader"></param>
     /// <param name="columnName"></param>
     /// <returns></returns>
-    public static Guid GetGuidValue(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetGuid(dbDataReader.GetOrdinal(columnName));
+    public static Guid GetGuidValue(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.GetRequiredValue(columnName, nameof(Guid), static (reader, ordinal) => reader.GetGuid(ordinal));
 
     /// <summary>
     /// Get the nullable GUID value from the <see cref="DbDataReader"/>.
@@ -48,7 +50,8 @@ public static class DbDataReaderExtensions
     /// <param name="dbDataReader"></param>
     /// <param name="columnName"></param>
     /// <returns></returns>
-    public static short GetInt16Value(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetInt16(dbDataReader.GetOrdinal(columnName));
+    public static short GetInt16Value(this DbDataReader dbDataReader, string columnName)=>
+        dbDataReader.GetRequiredValue(columnName, nameof(Int16), static (reader, ordinal) => reader.GetInt16(ordinal));
 
     /// <summary>
     /// Get the nullable int value from the <see cref="DbDataReader"/>.
@@ -65,7 +68,8 @@ public static class DbDataReaderExtensions
     /// <param name="dbDataReader"></param>
     /// <param name="columnName"></param>
     /// <returns></returns>
-    public static int GetInt32Value(this DbDataReader dbDataReader, string columnName) => dbDataReader.GetInt32(dbDataReader.GetOrdinal(columnName));
+    public static int GetInt32Value(this DbDataReader dbDataReader, string columnName) =>
+        dbDataReader.GetRequiredValue(columnName, nameof(Int32), static (reader, ordinal) => reader.GetInt32(ordinal));
 
     /// <summary>
     /// Get the nullable int value from the <see cref="DbDataReader"/>.
@@ -83,7 +87,7 @@ public static class DbDataReaderExtensions
     /// <param name="columnName"></param>
     /// <returns></returns>
     public static long GetInt64Value(this DbDataReader dbDataReader, string columnName) =>
-        dbDataReader.GetInt64(dbDataReader.GetOrdinal(columnName));
+        dbDataReader.GetRequiredValue(columnName, nameof(Int64), static (reader, ordinal) => reader.GetInt64(ordinal));
 
     /// <summary>
     /// Get the nullable long value from the <see cref="DbDataReader"/>.
@@ -101,7 +105,7 @@ public static class DbDataReaderExtensions
     /// <param name="columnName"></param>
     /// <returns></returns>
     public static decimal GetDecimalValue(this DbDataReader dbDataReader, string columnName) =>
-        dbDataReader.GetDecimal(dbDataReader.GetOrdinal(columnName));
+        dbDataReader.GetRequiredValue(columnName, nameof(Decimal), static (reader, ordinal) => reader.GetDecimal(ordinal));
 
     /// <summary>
     /// Get the nullable decimal value from the <see cref="DbDataReader"/>.
@@ -121,7 +125,7 @@ public static class DbDataReaderExtensions
     /// <param name="columnName"></param>
     /// <returns></returns>
     public static bool GetBooleanValue(this DbDataReader dbDataReader, string columnName) =>
-        dbDataReader.GetBoolean(dbDataReader.GetOrdinal(columnName));
+        dbDataReader.GetRequiredValue(columnName, nameof(Boolean), static (reader, ordinal) => reader.GetBoolean(ordinal));
 
     /// <summary>
     /// Get the nullable boolean value from the <see cref="DbDataReader"/>.
@@ -137,11 +141,12 @@ public static class DbDataReaderExtensions
     /// </summary>
     /// <param name="dbDataReader"></param>
     /// <param name="columnName"></param>
+    /// <param name="kind">The <see cref="DateTimeKind"/> to specify for the resulting <see cref="DateTime"/>.</param>
     /// <returns></returns>
-    public static DateTime GetDateTimeValueAsUtc(this DbDataReader dbDataReader, string columnName)
+    public static DateTime GetDateTimeValueAsUtc(this DbDataReader dbDataReader, string columnName, DateTimeKind kind = DateTimeKind.Utc)
     {
-        var result = dbDataReader.GetDateTime(dbDataReader.GetOrdinal(columnName));
-        result = DateTime.SpecifyKind(result, DateTimeKind.Utc);
+        var result = dbDataReader.GetRequiredValue(columnName, nameof(DateTime), static (reader, ordinal) => reader.GetDateTime(ordinal));
+        result = DateTime.SpecifyKind(result, kind);
         return result;
     }
 
@@ -173,12 +178,7 @@ public static class DbDataReaderExtensions
     public static T GetEnumValueFromInt32<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
-        if (dbDataReader.IsDBNull(columnName))
-        {
-            throw new InvalidOperationException($"Cannot convert null in column `{columnName}` to enum of type `{typeof(T).Name}`");
-        }
-
-        var value = dbDataReader.GetInt32Value(columnName);
+        var value = dbDataReader.GetRequiredValue(columnName, $"enum of type `{typeof(T).Name}`", static (reader, ordinal) => reader.GetInt32(ordinal));
         return (T)Enum.ToObject(typeof(T), value);
     }
 
@@ -212,12 +212,7 @@ public static class DbDataReaderExtensions
     public static T GetEnumValueFromInt16<T>(this DbDataReader dbDataReader, string columnName)
         where T : struct, Enum
     {
-        if (dbDataReader.IsDBNull(columnName))
-        {
-            throw new InvalidOperationException($"Cannot convert null in column `{columnName}` to enum of type `{typeof(T).Name}`");
-        }
-
-        var value = dbDataReader.GetInt16Value(columnName);
+        var value = dbDataReader.GetRequiredValue(columnName, $"enum of type `{typeof(T).Name}`", static (reader, ordinal) => reader.GetInt16(ordinal));
         return (T)Enum.ToObject(typeof(T), value);
     }
 
@@ -238,5 +233,16 @@ public static class DbDataReaderExtensions
 
         var value = dbDataReader.GetInt16Value(columnName);
         return (T)Enum.ToObject(typeof(T), value);
+    }
+
+    private static TResult GetRequiredValue<TResult>(this DbDataReader dbDataReader, string columnName, string typeName, Func<DbDataReader, int, TResult> getValue)
+    {
+        var ordinal = dbDataReader.GetOrdinal(columnName);
+        if (dbDataReader.IsDBNull(ordinal))
+        {
+            throw new InvalidOperationException($"Cannot convert null in column `{columnName}` to {typeName}");
+        }
+
+        return getValue(dbDataReader, ordinal);
     }
 }
